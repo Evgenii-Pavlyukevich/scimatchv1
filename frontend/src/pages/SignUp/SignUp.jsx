@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import FormInput from '../../components/FormInput/FormInput';
 import { authService } from '../../services/auth';
 import './SignUp.css';
@@ -7,10 +7,10 @@ import './SignUp.css';
 const SignUp = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    login: '',
     email: '',
     password: '',
     confirmPassword: '',
+    name: '',
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -32,26 +32,26 @@ const SignUp = () => {
   const validateForm = () => {
     const newErrors = {};
     
-    if (!formData.login) {
-      newErrors.login = 'Username is required';
-    } else if (formData.login.length < 3) {
-      newErrors.login = 'Username must be at least 3 characters';
+    if (!formData.name.trim()) {
+      newErrors.name = 'Введите имя';
     }
 
     if (!formData.email) {
-      newErrors.email = 'Email is required';
+      newErrors.email = 'Введите email';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Invalid email format';
+      newErrors.email = 'Неверный формат email';
     }
 
     if (!formData.password) {
-      newErrors.password = 'Password is required';
-    } else if (formData.password.length < 3) {
-      newErrors.password = 'Password must be at least 3 characters';
+      newErrors.password = 'Введите пароль';
+    } else if (formData.password.length < 6) {
+      newErrors.password = 'Пароль должен содержать минимум 6 символов';
     }
 
-    if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match';
+    if (!formData.confirmPassword) {
+      newErrors.confirmPassword = 'Подтвердите пароль';
+    } else if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = 'Пароли не совпадают';
     }
 
     setErrors(newErrors);
@@ -65,20 +65,13 @@ const SignUp = () => {
 
     setIsLoading(true);
     try {
-      const userData = {
-        login: formData.login,
-        email: formData.email,
-        password: formData.password,
-      };
-      console.log('Sending signup request:', userData);
-      const response = await authService.signUp(userData);
-      console.log('Signup successful:', response);
+      await authService.signUp(formData);
       navigate('/signin');
     } catch (error) {
-      console.error('Signup error:', error);
+      console.error('Ошибка регистрации:', error);
       setErrors(prev => ({
         ...prev,
-        submit: error.message
+        submit: error.message || 'Ошибка при регистрации. Попробуйте снова.'
       }));
     } finally {
       setIsLoading(false);
@@ -88,17 +81,17 @@ const SignUp = () => {
   return (
     <div className="signup-container">
       <form onSubmit={handleSubmit} className="signup-form">
-        <h1>Sign Up</h1>
-        
-        <FormInput
-          label="Username"
-          type="text"
-          name="login"
-          value={formData.login}
-          onChange={handleChange}
-          error={errors.login}
-        />
+        <h1>Регистрация</h1>
 
+        <FormInput
+          label="Имя"
+          type="text"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          error={errors.name}
+        />
+        
         <FormInput
           label="Email"
           type="email"
@@ -109,7 +102,7 @@ const SignUp = () => {
         />
 
         <FormInput
-          label="Password"
+          label="Пароль"
           type="password"
           name="password"
           value={formData.password}
@@ -118,7 +111,7 @@ const SignUp = () => {
         />
 
         <FormInput
-          label="Confirm Password"
+          label="Подтверждение пароля"
           type="password"
           name="confirmPassword"
           value={formData.confirmPassword}
@@ -135,12 +128,14 @@ const SignUp = () => {
           className="submit-button"
           disabled={isLoading}
         >
-          {isLoading ? 'Signing up...' : 'Sign Up'}
+          {isLoading ? 'Регистрация...' : 'Зарегистрироваться'}
         </button>
 
-        <p className="signin-link">
-          Already have an account? <a href="/signin">Sign In</a>
-        </p>
+        <div className="links-container">
+          <Link to="/signin" className="signin-link">
+            Уже есть аккаунт? Войти
+          </Link>
+        </div>
       </form>
     </div>
   );

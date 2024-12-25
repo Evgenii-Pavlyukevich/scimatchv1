@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import FormInput from '../../components/FormInput/FormInput';
 import { authService } from '../../services/auth';
 import './SignIn.css';
@@ -31,13 +31,13 @@ const SignIn = () => {
     const newErrors = {};
     
     if (!formData.email) {
-      newErrors.email = 'Email is required';
+      newErrors.email = 'Введите email';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Invalid email format';
+      newErrors.email = 'Неверный формат email';
     }
 
     if (!formData.password) {
-      newErrors.password = 'Password is required';
+      newErrors.password = 'Введите пароль';
     }
 
     setErrors(newErrors);
@@ -55,17 +55,15 @@ const SignIn = () => {
       
       if (response.status === 200) {
         localStorage.setItem('token', response.access_token);
-        
-        // Navigate to specialist list after successful login
         navigate('/specialistlist');
       } else {
-        throw new Error('Authentication failed');
+        throw new Error('Ошибка аутентификации');
       }
     } catch (error) {
-      console.error('Signin error:', error);
+      console.error('Ошибка входа:', error);
       setErrors(prev => ({
         ...prev,
-        submit: error.message || 'Invalid credentials. Please try again.'
+        submit: error.message || 'Неверные учетные данные. Попробуйте снова.'
       }));
     } finally {
       setIsLoading(false);
@@ -75,7 +73,7 @@ const SignIn = () => {
   return (
     <div className="signin-container">
       <form onSubmit={handleSubmit} className="signin-form">
-        <h1>Sign In</h1>
+        <h1>Вход в систему</h1>
         
         <FormInput
           label="Email"
@@ -87,7 +85,7 @@ const SignIn = () => {
         />
 
         <FormInput
-          label="Password"
+          label="Пароль"
           type="password"
           name="password"
           value={formData.password}
@@ -104,28 +102,18 @@ const SignIn = () => {
           className="submit-button"
           disabled={isLoading}
         >
-          {isLoading ? 'Signing in...' : 'Sign In'}
+          {isLoading ? 'Выполняется вход...' : 'Войти'}
         </button>
 
         <div className="links-container">
-          <p className="signup-link">
-            Don't have an account? <a href="/signup">Sign Up</a>
-          </p>
-          <p className="reset-link">
-            <a href="/reset-password">Forgot Password?</a>
-          </p>
+          <Link to="/signup" className="signup-link">
+            Зарегистрироваться
+          </Link>
+          <Link to="/reset-password" className="reset-link">
+            Забыли пароль?
+          </Link>
         </div>
       </form>
-      
-      {/* Temporary link for testing */}
-      <div style={{ marginTop: '20px', textAlign: 'center' }}>
-        <button 
-          onClick={() => navigate('/specialistlist')}
-          style={{ padding: '10px', cursor: 'pointer' }}
-        >
-          View Specialists List
-        </button>
-      </div>
     </div>
   );
 };
