@@ -31,13 +31,13 @@ const SignIn = () => {
     const newErrors = {};
     
     if (!formData.email) {
-      newErrors.email = 'Введите email';
+      newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Неверный формат email';
+      newErrors.email = 'Invalid email format';
     }
 
     if (!formData.password) {
-      newErrors.password = 'Введите пароль';
+      newErrors.password = 'Password is required';
     }
 
     setErrors(newErrors);
@@ -55,15 +55,17 @@ const SignIn = () => {
       
       if (response.status === 200) {
         localStorage.setItem('token', response.access_token);
+        
+        // Navigate to specialist list after successful login
         navigate('/specialistlist');
       } else {
-        throw new Error('Ошибка аутентификации');
+        throw new Error('Authentication failed');
       }
     } catch (error) {
-      console.error('Ошибка входа:', error);
+      console.error('Signin error:', error);
       setErrors(prev => ({
         ...prev,
-        submit: error.message || 'Неверные учетные данные. Попробуйте снова.'
+        submit: error.message || 'Invalid credentials. Please try again.'
       }));
     } finally {
       setIsLoading(false);
@@ -73,7 +75,7 @@ const SignIn = () => {
   return (
     <div className="signin-container">
       <form onSubmit={handleSubmit} className="signin-form">
-        <h1>Вход в систему</h1>
+        <h1>Авторизация</h1>
         
         <FormInput
           label="Email"
@@ -102,18 +104,23 @@ const SignIn = () => {
           className="submit-button"
           disabled={isLoading}
         >
-          {isLoading ? 'Выполняется вход...' : 'Войти'}
+          {isLoading ? 'Вход...' : 'Войти'}
         </button>
 
         <div className="links-container">
           <Link to="/signup" className="signup-link">
             Зарегистрироваться
           </Link>
-          <Link to="/reset-password" className="reset-link">
-            Забыли пароль?
-          </Link>
+          <p className="reset-link">
+            <a href="/reset-password">Забыли пароль?</a>
+          </p>
         </div>
       </form>
+      
+      {/* Temporary link for testing */}
+      <div style={{ marginTop: '20px', textAlign: 'center' }}>
+        
+      </div>
     </div>
   );
 };

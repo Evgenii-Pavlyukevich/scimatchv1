@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import FormInput from '../../components/FormInput/FormInput';
 import { authService } from '../../services/auth';
 import './SignUp.css';
@@ -7,10 +7,10 @@ import './SignUp.css';
 const SignUp = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
+    login: '',
     email: '',
     password: '',
     confirmPassword: '',
-    name: '',
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -32,26 +32,26 @@ const SignUp = () => {
   const validateForm = () => {
     const newErrors = {};
     
-    if (!formData.name.trim()) {
-      newErrors.name = 'Введите имя';
+    if (!formData.login) {
+      newErrors.login = 'Username is required';
+    } else if (formData.login.length < 3) {
+      newErrors.login = 'Username must be at least 3 characters';
     }
 
     if (!formData.email) {
-      newErrors.email = 'Введите email';
+      newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Неверный формат email';
+      newErrors.email = 'Invalid email format';
     }
 
     if (!formData.password) {
-      newErrors.password = 'Введите пароль';
-    } else if (formData.password.length < 6) {
-      newErrors.password = 'Пароль должен содержать минимум 6 символов';
+      newErrors.password = 'Password is required';
+    } else if (formData.password.length < 3) {
+      newErrors.password = 'Password must be at least 3 characters';
     }
 
-    if (!formData.confirmPassword) {
-      newErrors.confirmPassword = 'Подтвердите пароль';
-    } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Пароли не совпадают';
+    if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = 'Passwords do not match';
     }
 
     setErrors(newErrors);
@@ -65,13 +65,20 @@ const SignUp = () => {
 
     setIsLoading(true);
     try {
-      await authService.signUp(formData);
+      const userData = {
+        login: formData.login,
+        email: formData.email,
+        password: formData.password,
+      };
+      console.log('Sending signup request:', userData);
+      const response = await authService.signUp(userData);
+      console.log('Signup successful:', response);
       navigate('/signin');
     } catch (error) {
-      console.error('Ошибка регистрации:', error);
+      console.error('Signup error:', error);
       setErrors(prev => ({
         ...prev,
-        submit: error.message || 'Ошибка при регистрации. Попробуйте снова.'
+        submit: error.message
       }));
     } finally {
       setIsLoading(false);
@@ -82,16 +89,16 @@ const SignUp = () => {
     <div className="signup-container">
       <form onSubmit={handleSubmit} className="signup-form">
         <h1>Регистрация</h1>
-
+        
         <FormInput
           label="Имя"
           type="text"
-          name="name"
-          value={formData.name}
+          name="login"
+          value={formData.login}
           onChange={handleChange}
-          error={errors.name}
+          error={errors.login}
         />
-        
+
         <FormInput
           label="Email"
           type="email"
@@ -111,7 +118,7 @@ const SignUp = () => {
         />
 
         <FormInput
-          label="Подтверждение пароля"
+          label="Повторите пароль"
           type="password"
           name="confirmPassword"
           value={formData.confirmPassword}
@@ -131,11 +138,9 @@ const SignUp = () => {
           {isLoading ? 'Регистрация...' : 'Зарегистрироваться'}
         </button>
 
-        <div className="links-container">
-          <Link to="/signin" className="signin-link">
-            Уже есть аккаунт? Войти
-          </Link>
-        </div>
+        <p className="signin-link">
+          Уже есть аккаунт? <a href="/signin">Войти</a>
+        </p>
       </form>
     </div>
   );

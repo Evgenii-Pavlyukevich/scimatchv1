@@ -1,29 +1,58 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import FormInput from '../../components/FormInput/FormInput';
 import { authService } from '../../services/auth';
 import './ResetPassword.css';
 
 const ResetPassword = () => {
+  const navigate = useNavigate();
+  const [step, setStep] = useState(1);
   const [email, setEmail] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
+  const [code, setCode] = useState('');
+  const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const validateEmail = () => {
     if (!email) {
-      setError('Введите email');
+      setErrors({ email: 'Email is required' });
+      return false;
+    }
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      setErrors({ email: 'Invalid email format' });
+      return false;
+    }
+    return true;
+  };
+
+  const handleRequestCode = async (e) => {
+    e.preventDefault();
+    if (!validateEmail()) return;
+
+    setIsLoading(true);
+    try {
+      await authService.resetPassword(email);
+      setStep(2);
+      setErrors({});
+    } catch (error) {
+      setErrors({ submit: error.message });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleVerifyCode = async (e) => {
+    e.preventDefault();
+    if (!code) {
+      setErrors({ code: 'Требуется код верификации' });
       return;
     }
 
     setIsLoading(true);
     try {
-      await authService.resetPassword(email);
-      setSuccess(true);
-      setError('');
-    } catch (err) {
-      setError('Не удалось отправить код сброса пароля. Попробуйте снова.');
+      await authService.verifyResetCode(email, code);
+      navigate('/signin');
+    } catch (error) {
+      setErrors({ submit: error.message });
     } finally {
       setIsLoading(false);
     }
@@ -31,48 +60,64 @@ const ResetPassword = () => {
 
   return (
     <div className="reset-password-container">
-      <form onSubmit={handleSubmit} className="reset-password-form">
-        <h1>Восстановление пароля</h1>
+      <form 
+        onSubmit={step === 1 ? handleRequestCode : handleVerifyCode} 
+        className="reset-password-form"
+      >
+        <h1>Сброс пароля</h1>
         
-        {success ? (
-          <div className="success-message">
-            <p>Инструкции по сбросу пароля отправлены на ваш email.</p>
-            <Link to="/signin" className="back-to-signin">
-              Вернуться к входу
-            </Link>
-          </div>
-        ) : (
+        {step === 1 ? (
           <>
-            <p className="instruction-text">
-              Введите ваш email для получения инструкций по сбросу пароля
-            </p>
-
             <FormInput
               label="Email"
               type="email"
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
-                setError('');
+                setErrors({});
               }}
-              error={error}
+              error={errors.email}
             />
-
             <button 
               type="submit" 
               className="submit-button"
               disabled={isLoading}
             >
-              {isLoading ? 'Отправка...' : 'Отправить'}
+              {isLoading ? 'Отправка...' : 'Отправить код'}
             </button>
-
-            <div className="links-container">
-              <Link to="/signin" className="back-link">
-                Вернуться к входу
-              </Link>
-            </div>
+          </>
+        ) : (
+          <>
+            <p className="verification-message">
+              Пожалуйста, введите код верификации, отправленный на {email}
+            </p>
+            <FormInput
+              label="Код верификации"
+              type="text"
+              value={code}
+              onChange={(e) => {
+                setCode(e.target.value);
+                setErrors({});
+              }}
+              error={errors.code}
+            />
+            <button 
+              type="submit" 
+              className="submit-button"
+              disabled={isLoading}
+            >
+              {isLoading ? 'Верификация...' : 'Верифицировать код'}
+            </button>
           </>
         )}
+
+        {errors.submit && (
+          <div className="error-message">{errors.submit}</div>
+        )}
+
+        <p className="signin-link">
+          Вспомнили пароль? <a href="/signin">Войти</a>
+        </p>
       </form>
     </div>
   );
