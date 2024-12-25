@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://api.scimatch.ru'; // or whatever your cloud backend URL is
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 export const specialistService = {
   async getSpecialists() {
