@@ -1,0 +1,275 @@
+.recommendations-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.recommendations-header {
+  margin-bottom: 32px;
+}
+
+.recommendations-header h1 {
+  font-size: 32px;
+  color: #333;
+  margin: 0 0 8px 0;
+}
+
+.recommendations-subtitle {
+  color: #666;
+  font-size: 16px;
+  margin: 0;
+}
+
+.recommendations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.specialist-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+}
+
+.specialist-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.match-score {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+.score-circle {
+  background: rgba(0, 142, 222, 0.1);
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #008EDE;
+}
+
+.score-number {
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.score-label {
+  font-size: 10px;
+  margin-top: 2px;
+}
+
+.specialist-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 16px;
+  object-fit: cover;
+}
+
+.specialist-info h3 {
+  font-size: 18px;
+  color: #333;
+  margin: 0 0 8px 0;
+}
+
+.specialist-position,
+.specialist-university {
+  color: #666;
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+.specialist-description {
+  color: #666;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 12px 0;
+}
+
+.specialist-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.metric-badge {
+  background: rgba(0, 142, 222, 0.1);
+  color: #008EDE;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+}
+
+.view-profile-button {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background: #008EDE;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.view-profile-button:hover {
+  background: #0056b3;
+}
+
+.loading-state,
+.error-state,
+.no-recommendations {
+  text-align: center;
+  padding: 48px;
+  color: #666;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #008EDE;
+  border-radius: 50%;
+  margin: 0 auto 16px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.update-profile-button {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 12px 24px;
+  background: #008EDE;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.update-profile-button:hover {
+  background: #0056b3;
+}
+
+@media (max-width: 768px) {
+  .recommendations-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .recommendations-page {
+    padding: 20px;
+  }
+  
+  .specialist-card {
+    padding: 20px;
+  }
+}
+
+.find-coauthor-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 48px;
+}
+
+.find-coauthor-button {
+  padding: 16px 48px;
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+  background: #008EDE;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 142, 222, 0.2);
+}
+
+.find-coauthor-button:hover {
+  background: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 142, 222, 0.3);
+}
+
+.find-coauthor-button:active {
+  transform: translateY(0);
+}
+
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.results-header h2 {
+  font-size: 24px;
+  color: #333;
+  margin: 0;
+}
+
+.refresh-button {
+  padding: 8px 16px;
+  font-size: 14px;
+  color: #008EDE;
+  background: rgba(0, 142, 222, 0.1);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.refresh-button:hover {
+  background: rgba(0, 142, 222, 0.2);
+}
+
+.retry-button {
+  padding: 12px 24px;
+  background: #008EDE;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 16px;
+  transition: background-color 0.2s;
+}
+
+.retry-button:hover {
+  background: #0056b3;
+}
+
+@media (max-width: 768px) {
+  .find-coauthor-button {
+    width: 100%;
+    padding: 16px 24px;
+  }
+  
+  .results-header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  
+  .refresh-button {
+    width: 100%;
+  }
+} 

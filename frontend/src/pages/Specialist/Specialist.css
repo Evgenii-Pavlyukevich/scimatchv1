@@ -1,0 +1,200 @@
+.specialist-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.specialist-header {
+  display: flex;
+  gap: 40px;
+  margin-bottom: 40px;
+  padding: 24px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.avatar-container {
+  flex-shrink: 0;
+}
+
+.specialist-avatar {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.specialist-info {
+  flex-grow: 1;
+}
+
+.specialist-name {
+  font-size: 32px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 16px;
+}
+
+.specialist-affiliation {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.university-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: rgba(0, 142, 222, 0.1);
+  padding: 8px 16px;
+  border-radius: 6px;
+  color: #008EDE;
+  max-width: fit-content;
+}
+
+.university-icon {
+  font-style: normal;
+}
+
+.position-label {
+  background-color: rgba(255, 89, 89, 0.1);
+  padding: 8px 16px;
+  border-radius: 6px;
+  color: #FF5959;
+  max-width: fit-content;
+}
+
+.specialist-description {
+  color: #666;
+  line-height: 1.6;
+  margin-top: 16px;
+  white-space: pre-line;
+}
+
+.metrics-section,
+.coauthors-section {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.metrics-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.metric-badge {
+  background-color: #F5F5F5;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  color: #666;
+}
+
+.coauthors-list {
+  line-height: 1.8;
+  color: #666;
+}
+
+.coauthor-item {
+  display: inline;
+}
+
+.loading,
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  font-size: 18px;
+  color: #666;
+}
+
+.error {
+  color: #FF5959;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.back-button:hover {
+  transform: translateX(-4px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  color: #333;
+}
+
+.back-arrow {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.publications-section {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.publications-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.publication-item {
+  padding: 16px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.publication-item:last-child {
+  border-bottom: none;
+}
+
+.publication-type {
+  background-color: #F0F7FF;
+  color: #0066CC;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.publication-content {
+  color: #333;
+  line-height: 1.6;
+  flex: 1;
+}
+
+/* Style for when there's no data */
+.publications-list > span {
+  color: #666;
+  font-style: italic;
+} 

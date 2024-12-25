@@ -1,0 +1,69 @@
+.specialist-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  width: 100%;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.specialist-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.specialist-name {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 16px;
+}
+
+.university-label {
+  display: inline-block;
+  background-color: rgba(0, 142, 222, 0.03);
+  padding: 8px 16px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  color: #008EDE;
+  font-size: 14px;
+}
+
+.position-label {
+  display: inline-block;
+  background-color: rgba(255, 89, 89, 0.03);
+  padding: 8px 16px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  color: #FF5959;
+  font-size: 14px;
+}
+
+.description {
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.activities-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.activities-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.activity-label {
+  background-color: #F5F5F5;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #666;
+} 

@@ -1,0 +1,27 @@
+.specialist-list-container {
+  min-height: 100vh;
+  background-color: #F5F5F5;
+  padding: 20px;
+}
+
+.specialist-list {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.loading,
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-size: 18px;
+  color: #666;
+}
+
+.error {
+  color: #FF5959;
+} 
