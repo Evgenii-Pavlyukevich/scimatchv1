@@ -1,6 +1,6 @@
 import { tokenService } from './token';
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL || 'https://snaplook-backend-414042592142.europe-west1.run.app';
 
 export const authService = {
   async signUp(userData) {
@@ -17,6 +17,9 @@ export const authService = {
       purchase_date: currentDate,
       tarif_of_user: "free"
     };
+
+    console.log('API URL:', API_URL);
+    console.log('Request URL:', `${API_URL}/users/create_user`);
 
     const response = await fetch(`${API_URL}/users/create_user`, {
       method: 'POST',
