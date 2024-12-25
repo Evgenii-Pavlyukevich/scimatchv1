@@ -1,13 +1,14 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL;
+import { specialists } from '../data/specialists';
 
 export const specialistService = {
   async getSpecialists() {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/specialists`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch specialists');
-      }
-      return await response.json();
+      // Return local data with a simulated delay
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(specialists);
+        }, 500);
+      });
     } catch (error) {
       console.error('Error fetching specialists:', error);
       throw error;
@@ -16,11 +17,16 @@ export const specialistService = {
 
   async getSpecialistById(id) {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/specialists/${id}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch specialist');
-      }
-      return await response.json();
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          const specialist = specialists.find(s => s.id === Number(id));
+          if (specialist) {
+            resolve(specialist);
+          } else {
+            reject(new Error('Specialist not found'));
+          }
+        }, 500);
+      });
     } catch (error) {
       console.error('Error fetching specialist:', error);
       throw error;

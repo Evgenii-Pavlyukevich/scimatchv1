@@ -1,4 +1,4 @@
-const API_URL = 'https://snaplook-backend-414042592142.europe-west1.run.app';
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const tokenService = {
   async getToken(credentials) {
