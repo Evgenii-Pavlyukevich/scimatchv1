@@ -1,32 +1,31 @@
-import { specialists } from '../data/specialists';
-
+/**
+ * Service for fetching specialist data
+ */
 export const specialistService = {
   async getSpecialists() {
     try {
-      // Return local data with a simulated delay
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(specialists);
-        }, 500);
-      });
+      const response = await fetch('/data.json');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const specialists = await response.json();
+      console.log('Loaded specialists:', specialists.length);
+      return specialists;
     } catch (error) {
       console.error('Error fetching specialists:', error);
-      throw error;
+      throw new Error('Failed to load specialists data');
     }
   },
 
   async getSpecialistById(id) {
     try {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          const specialist = specialists.find(s => s.id === Number(id));
-          if (specialist) {
-            resolve(specialist);
-          } else {
-            reject(new Error('Specialist not found'));
-          }
-        }, 500);
-      });
+      const specialists = await this.getSpecialists();
+      const specialist = specialists.find(s => s.id === Number(id));
+      if (!specialist) {
+        throw new Error(`Specialist with id ${id} not found`);
+      }
+      console.log('Loaded specialist:', specialist.id, 'Publications:', specialist.Publications?.length);
+      return specialist;
     } catch (error) {
       console.error('Error fetching specialist:', error);
       throw error;
